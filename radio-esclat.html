@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radio Esclat</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0d0d0d;
+    color: #f0ece2;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 2rem;
+    background: #080808;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+  }
+  .dot {
+    width: 12px; height: 12px;
+    background: #e8001d;
+    border-radius: 50%;
+    animation: pulse 1.8s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(232,0,29,.7); }
+    50%      { box-shadow: 0 0 0 8px rgba(232,0,29,0); }
+  }
+  .logo-text {
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #f0ece2;
+  }
+  .logo-text span { color: #e8001d; }
+  .wave {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: .4rem;
+  }
+  .wave b {
+    display: inline-block;
+    width: 3px;
+    background: #e8001d;
+    border-radius: 2px;
+    opacity: .6;
+    animation: wv 1.1s ease-in-out infinite;
+  }
+  .wave b:nth-child(1){height:6px; animation-delay:.0s}
+  .wave b:nth-child(2){height:14px;animation-delay:.1s}
+  .wave b:nth-child(3){height:10px;animation-delay:.2s}
+  .wave b:nth-child(4){height:20px;animation-delay:.3s}
+  .wave b:nth-child(5){height:12px;animation-delay:.4s}
+  .wave b:nth-child(6){height:18px;animation-delay:.5s}
+  .wave b:nth-child(7){height:8px; animation-delay:.6s}
+  @keyframes wv {
+    0%,100% { transform: scaleY(1); }
+    50%      { transform: scaleY(.2); }
+  }
+  .school {
+    font-size: .62rem;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    background: #111;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .tab {
+    flex: 1;
+    padding: .95rem .5rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: .68rem;
+    font-family: inherit;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #555;
+    transition: color .25s, border-color .25s, background .25s;
+  }
+  .tab:hover { color: #f0ece2; background: rgba(255,255,255,.03); }
+  .tab.active {
+    color: #f0ece2;
+    border-bottom-color: #e8001d;
+    background: rgba(232,0,29,.07);
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(232,0,29,.2);
+    color: #e8001d;
+    font-size: .55rem;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 5px;
+    vertical-align: middle;
+    font-weight: 800;
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; padding: 1.8rem 2rem 2.5rem; }
+  .panel.active { display: block; animation: fadein .35s ease; }
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .section-label {
+    font-size: .58rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: #e8001d;
+    margin-bottom: 1.4rem;
+    font-weight: 700;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    gap: 1px;
+    background: rgba(255,255,255,.05);
+  }
+  .grid-2 { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+
+  /* ── CARD ── */
+  .card {
+    background: #0d0d0d;
+    padding: 1.3rem 1.5rem;
+    border-left: 3px solid transparent;
+    transition: background .2s, border-color .2s;
+    cursor: default;
+  }
+  .card:hover {
+    background: #181818;
+    border-left-color: #e8001d;
+  }
+  .card-num {
+    font-size: .52rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: #333;
+    margin-bottom: .5rem;
+    font-weight: 700;
+  }
+  .card-title {
+    font-size: .93rem;
+    font-weight: 700;
+    color: #f0ece2;
+    margin-bottom: .3rem;
+    line-height: 1.3;
+  }
+  .card-sub {
+    font-size: .73rem;
+    color: #555;
+    margin-bottom: .7rem;
+  }
+  .card-link {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #e8001d;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(232,0,29,.35);
+    padding-bottom: 1px;
+    transition: border-color .2s, color .2s;
+  }
+  .card-link:hover { color: #ff3344; border-bottom-color: #ff3344; }
+  .card-link-none {
+    font-size: .62rem;
+    color: #333;
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 1rem 2rem;
+    border-top: 1px solid rgba(255,255,255,.05);
+    background: #080808;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer p { font-size: .58rem; color: #333; letter-spacing: .07em; text-transform: uppercase; }
+  .freq { font-size: .9rem; font-weight: 900; letter-spacing: .12em; color: #e8001d; opacity: .45; }
+
+  @media (max-width:520px) {
+    .header { flex-direction: column; align-items: flex-start; gap: .6rem; }
+    .school { text-align: left; }
+    .panel { padding: 1.2rem; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .tab { padding: .8rem .3rem; font-size: .6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="dot"></div>
+    <div class="logo-text">RADIO <span>ESCLAT</span></div>
+    <div class="wave"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+  </div>
+  <div class="school">IES Cid Campeador<br>Taller de R&agrave;dio &middot; Val&egrave;ncia</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="show(1)">
+    Entrevistes <span class="badge">7</span>
+  </button>
+  <button class="tab" onclick="show(2)">
+    Microrelats <span class="badge">2</span>
+  </button>
+  <button class="tab" onclick="show(3)">
+    Podcasts <span class="badge">6</span>
+  </button>
+</div>
+
+<!-- PANEL 1: ENTREVISTES -->
+<div class="panel active" id="p1">
+  <div class="section-label">&#9679; Entrevistes &mdash; converses en profunditat</div>
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-num">01 &mdash; Entrevista</div>
+      <div class="card-title">Carles Fenollosa</div>
+      <div class="card-sub">Conversa en profunditat</div>
+      <a class="card-link" href="URL_ENTREVISTA_FENOLLOSA">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">02 &mdash; Entrevista</div>
+      <div class="card-title">Ferm&iacute;n Momp&oacute;</div>
+      <div class="card-sub">Conversa en profunditat</div>
+      <a class="card-link" href="URL_ENTREVISTA_MOMPO">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">03 &mdash; Entrevista</div>
+      <div class="card-title">Marc Palao</div>
+      <div class="card-sub">Conversa en profunditat</div>
+      <a class="card-link" href="URL_ENTREVISTA_PALAO">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">04 &mdash; Entrevista</div>
+      <div class="card-title">Marc Peris</div>
+      <div class="card-sub">Conversa en profunditat</div>
+      <a class="card-link" href="URL_ENTREVISTA_PERIS">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">05 &mdash; Entrevista</div>
+      <div class="card-title">Nuria Soler</div>
+      <div class="card-sub">Conversa en profunditat</div>
+      <a class="card-link" href="URL_ENTREVISTA_SOLER">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">06 &mdash; Entrevista</div>
+      <div class="card-title">Paco Coloma</div>
+      <div class="card-sub">Conversa en profunditat</div>
+      <a class="card-link" href="URL_ENTREVISTA_COLOMA">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">07 &mdash; Entrevista</div>
+      <div class="card-title">Pedro Garc&iacute;a</div>
+      <div class="card-sub">Conversa en profunditat</div>
+      <a class="card-link" href="URL_ENTREVISTA_GARCIA">&#9654; Escolta ara</a>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL 2: MICRORELATS -->
+<div class="panel" id="p2">
+  <div class="section-label">&#9679; Microrelats &mdash; narracions curtes de l'alumnat</div>
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-num">01 &mdash; Microrelat &middot; castell&agrave;</div>
+      <div class="card-title">Daniel D&iacute;az</div>
+      <div class="card-sub">Narraci&oacute; curta en castell&agrave;</div>
+      <a class="card-link" href="URL_MICRORELAT_DIAZ">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">02 &mdash; Microrelat &middot; valenci&agrave;</div>
+      <div class="card-title">Aitana Pastor</div>
+      <div class="card-sub">Narraci&oacute; curta en valenci&agrave;</div>
+      <a class="card-link" href="URL_MICRORELAT_PASTOR">&#9654; Escolta ara</a>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL 3: PODCASTS -->
+<div class="panel" id="p3">
+  <div class="section-label">&#9679; Podcasts &mdash; programes produïts per l'alumnat</div>
+  <div class="grid grid-3">
+    <div class="card">
+      <div class="card-num">01 &mdash; Podcast</div>
+      <div class="card-title">El descuento</div>
+      <div class="card-sub">Adam Callejo &amp; Arnau P&eacute;rez</div>
+      <a class="card-link" href="URL_PODCAST_DESCUENTO">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">02 &mdash; Podcast</div>
+      <div class="card-title">Hello Hello</div>
+      <div class="card-sub">Isabella Totena &amp; Isabel Tortora</div>
+      <a class="card-link" href="URL_PODCAST_HELLOHELLO">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">03 &mdash; Podcast</div>
+      <div class="card-title">Investigando lo desconocido</div>
+      <div class="card-sub">Fran Padilla &amp; Teresa Ruiz</div>
+      <a class="card-link" href="URL_PODCAST_INVESTIGANDO">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">04 &mdash; Podcast</div>
+      <div class="card-title">J&oacute;venes Deportistas</div>
+      <div class="card-sub">Mario Santamar&iacute;a &amp; Juan Vaca</div>
+      <a class="card-link" href="URL_PODCAST_DEPORTISTAS">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">05 &mdash; Podcast</div>
+      <div class="card-title">Susurros del Terror</div>
+      <div class="card-sub">Adriana Roig &amp; Jose Cobreros</div>
+      <a class="card-link" href="URL_PODCAST_TERROR">&#9654; Escolta ara</a>
+    </div>
+    <div class="card">
+      <div class="card-num">06 &mdash; Podcast</div>
+      <div class="card-title">Variedades</div>
+      <div class="card-sub">Favour Kalu, Julio Araque &amp; Javier Gand&iacute;a</div>
+      <a class="card-link" href="URL_PODCAST_VARIEDADES">&#9654; Escolta ara</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>&copy; 2026 IES Cid Campeador &middot; Conselleria d'Educaci&oacute;</p>
+  <div class="freq">FM 107.5</div>
+</div>
+
+<script>
+function show(n) {
+  document.querySelectorAll('.tab').forEach(function(t,i){
+    t.classList.toggle('active', i+1===n);
+  });
+  document.querySelectorAll('.panel').forEach(function(p,i){
+    p.classList.toggle('active', i+1===n);
+  });
+}
+</script>
+</body>
+</html>
